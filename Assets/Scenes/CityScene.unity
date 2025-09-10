@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 1071420863}
   - component: {fileID: 1071420865}
   - component: {fileID: 1071420864}
+  - component: {fileID: 1071420866}
   m_Layer: 5
   m_Name: FireTruckPlace
   m_TagString: Fire
@@ -490,6 +491,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071420862}
   m_CullTransparentMesh: 1
+--- !u!114 &1071420866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071420862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3871bb70a81ca4b94a4c068d6ba0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objScript: {fileID: 1310376410}
 --- !u!1 &1086768092
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +603,7 @@ RectTransform:
   - {fileID: 1319154693}
   - {fileID: 1071420863}
   - {fileID: 1751996399}
-  - {fileID: 1307154712}
+  - {fileID: 1137538115}
   - {fileID: 1657957371}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -598,7 +612,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1307154711
+--- !u!1 &1137538114
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -606,11 +620,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1307154712}
-  - component: {fileID: 1307154714}
-  - component: {fileID: 1307154713}
-  - component: {fileID: 1307154716}
-  - component: {fileID: 1307154715}
+  - component: {fileID: 1137538115}
+  - component: {fileID: 1137538119}
+  - component: {fileID: 1137538118}
+  - component: {fileID: 1137538117}
+  - component: {fileID: 1137538116}
   m_Layer: 5
   m_Name: FireTruck
   m_TagString: Fire
@@ -618,32 +632,58 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1307154712
+--- !u!224 &1137538115
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307154711}
-  m_LocalRotation: {x: 0, y: 0, z: -0.14841361, w: 0.9889254}
+  m_GameObject: {fileID: 1137538114}
+  m_LocalRotation: {x: 0, y: 0, z: -0.13087231, w: 0.9913992}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1086768096}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.07}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15.04}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 620, y: -151}
+  m_AnchoredPosition: {x: 602.7, y: 325.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1307154713
+--- !u!114 &1137538116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307154711}
+  m_GameObject: {fileID: 1137538114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2386279e92e0e04d95d8536ef381a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectScr: {fileID: 1310376410}
+  screenBou: {fileID: 1310376412}
+--- !u!225 &1137538117
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137538114}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1137538118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137538114}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -667,40 +707,14 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1307154714
+--- !u!222 &1137538119
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307154711}
+  m_GameObject: {fileID: 1137538114}
   m_CullTransparentMesh: 1
---- !u!114 &1307154715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307154711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2386279e92e0e04d95d8536ef381a64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectScr: {fileID: 1310376410}
-  screenBou: {fileID: 0}
---- !u!225 &1307154716
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307154711}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &1310376409
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +748,7 @@ MonoBehaviour:
   vehicles:
   - {fileID: 1751996398}
   - {fileID: 1657957370}
-  - {fileID: 1071420862}
+  - {fileID: 1137538114}
   startCoordinates: []
   can: {fileID: 1086768095}
   effects: {fileID: 1520155635}
@@ -787,9 +801,10 @@ GameObject:
   - component: {fileID: 1319154693}
   - component: {fileID: 1319154695}
   - component: {fileID: 1319154694}
+  - component: {fileID: 1319154696}
   m_Layer: 5
   m_Name: AmbulancePlace
-  m_TagString: Garbage
+  m_TagString: Medicine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -851,6 +866,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319154692}
   m_CullTransparentMesh: 1
+--- !u!114 &1319154696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319154692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3871bb70a81ca4b94a4c068d6ba0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objScript: {fileID: 1310376410}
 --- !u!1 &1325448678
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +890,7 @@ GameObject:
   - component: {fileID: 1325448679}
   - component: {fileID: 1325448681}
   - component: {fileID: 1325448680}
+  - component: {fileID: 1325448682}
   m_Layer: 5
   m_Name: GarbageTruckPlace
   m_TagString: Garbage
@@ -926,6 +955,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325448678}
   m_CullTransparentMesh: 1
+--- !u!114 &1325448682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325448678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3871bb70a81ca4b94a4c068d6ba0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objScript: {fileID: 1310376410}
 --- !u!1 &1520155634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectScr: {fileID: 1310376410}
-  screenBou: {fileID: 0}
+  screenBou: {fileID: 1310376412}
 --- !u!225 &1657957375
 CanvasGroup:
   m_ObjectHideFlags: 0
