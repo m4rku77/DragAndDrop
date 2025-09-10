@@ -14,15 +14,14 @@ public class ObjectScript : MonoBehaviour
     public bool rightPlace = false;
     public GameObject lastDragged = null;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        startCoordinates = new Vector2[vehicles.Length];
+        for (int i = 0; i < vehicles.Length; i++)
+        {
+            startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
+            Debug.Log(vehicles[i].GetComponent<RectTransform>().localPosition);
+        }
     }
 }

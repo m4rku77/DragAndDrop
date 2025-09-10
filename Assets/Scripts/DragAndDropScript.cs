@@ -61,6 +61,21 @@ public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragH
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        //........
+        if (Input.GetMouseButtonUp(0))
+        {
+            objectScr.lastDragged = eventData.pointerDrag;
+            canvasGro.blocksRaycasts = true;
+            canvasGro.alpha = 1.0f;
+
+            if(objectScr.rightPlace)
+            {
+               canvasGro.blocksRaycasts = false;
+                objectScr.lastDragged = null;
+
+
+            }
+            
+            objectScr.rightPlace = false;
+        }
     }
 }
