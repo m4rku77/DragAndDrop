@@ -36,7 +36,35 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                 if((rotDiff <= 5 || (rotDiff >= 355 && rotDiff <= 360)) &&
                     (xSizeDiff <= 0.05 && ySizeDiff <= 0.05)) {
                     Debug.Log("Correct place");
-                    //.......
+                    objScript.rightPlace = true;
+                    eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = 
+                        GetComponent<RectTransform>().anchoredPosition;
+
+                    eventData.pointerDrag.GetComponent<RectTransform>().localRotation = 
+                        GetComponent<RectTransform>().localRotation;
+
+                    eventData.pointerDrag.GetComponent<RectTransform>().localScale = 
+                        GetComponent<RectTransform>().localScale;
+
+
+                    switch (eventData.pointerDrag.tag)
+                    {
+                        case "Garbage":
+                             objScript.effects.PlayOneShot(objScript.audioCli[2]);
+                            break;
+
+                        case "Medicine":
+                            objScript.effects.PlayOneShot(objScript.audioCli[3]);
+                            break;
+
+                        case "Fire":
+                            objScript.effects.PlayOneShot(objScript.audioCli[4]);
+                            break;
+                       
+                        default:
+                            Debug.Log("Unknown tag detected");
+                            break;
+                    }
                 }
 
             } else
