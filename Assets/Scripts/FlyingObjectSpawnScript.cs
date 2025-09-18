@@ -45,6 +45,19 @@ public class FlyingObjectSpawnScript : MonoBehaviour
 
     void SpawnObject()
     {
+        if (objectPrefabs.Length == 0)
+            return;
 
+        GameObject objectPrefab = objectPrefabs[Random.Range(0, objectPrefabs.Length)];
+        float y = Random.Range(minY, maxY);
+       
+        Vector3 spawnPosition = new Vector3(-spawnPoint.position.x, y, spawnPoint.position.z);
+        
+        GameObject flyingObject =
+            Instantiate(objectPrefab, spawnPosition, Quaternion.identity, spawnPoint);
+        float movementSpeed = Random.Range(objectMinSpeed, objectMaxSpeed);
+        FlyingObjectsControllerScript controller =
+            flyingObject.GetComponent<FlyingObjectsControllerScript>();
+        controller.speed = -movementSpeed;
     }
 }
