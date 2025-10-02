@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6580250509905032046}
   - component: {fileID: 4368732861791507950}
   - component: {fileID: 9212183770124500802}
+  - component: {fileID: 7023439083437523479}
   m_Layer: 5
   m_Name: FlyingObject2
   m_TagString: Untagged
@@ -105,3 +106,39 @@ MonoBehaviour:
   fadeDuration: 1
   waveAmplitude: 35
   waveFrequency: 1.6
+--- !u!58 &7023439083437523479
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956520407965952658}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 48
