@@ -36,9 +36,9 @@ public class FlyingObjectSpawnScript : MonoBehaviour
         Vector3 spawnPosition = new Vector3(spawnPoint.position.x, y, spawnPoint.position.z);
         GameObject cloud = 
             Instantiate(cloudPrefab, spawnPosition, Quaternion.identity, spawnPoint);
-        float movementSpeed = Random.Range(cloudMinSpeed, cloudMaxSpeed);   
-        FlyingObjectsControllerScript controller = 
-            cloud.GetComponent<FlyingObjectsControllerScript>();
+        float movementSpeed = Random.Range(cloudMinSpeed, cloudMaxSpeed);
+        ObstaclesControllerScript controller = 
+            cloud.GetComponent<ObstaclesControllerScript>();
         controller.speed = movementSpeed;
 
     }
@@ -56,8 +56,8 @@ public class FlyingObjectSpawnScript : MonoBehaviour
         GameObject flyingObject =
             Instantiate(objectPrefab, spawnPosition, Quaternion.identity, spawnPoint);
         float movementSpeed = Random.Range(objectMinSpeed, objectMaxSpeed);
-        FlyingObjectsControllerScript controller =
-            flyingObject.GetComponent<FlyingObjectsControllerScript>();
+        ObstaclesControllerScript controller =
+            flyingObject.GetComponent<ObstaclesControllerScript>();
         controller.speed = -movementSpeed;
     }
 }
