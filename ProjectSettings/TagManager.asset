@@ -4,10 +4,19 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Garbage
   - Medicine
   - Fire
   - Bomb
+  - b2
+  - e61
+  - e46
+  - eskavators
+  - tractor1
+  - tractor2
+  - police
+  - cement
+  - bus
+  - Garbage
   layers:
   - Default
   - TransparentFX

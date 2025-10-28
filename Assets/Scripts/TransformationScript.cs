@@ -2,69 +2,40 @@ using UnityEngine;
 
 public class TransformationScript : MonoBehaviour
 {
+    [Header("Adjust Speed")]
+    public float rotateSpeed = 45f;     // degrees per second
+    public float scaleSpeed = 0.3f;     // scale units per second
+    public float minScale = 0.3f;
+    public float maxScale = 0.9f;
+
     void Update()
     {
-      if(ObjectScript.lastDragged != null) {
-            if(Input.GetKey(KeyCode.Z)) {
-                ObjectScript.lastDragged.GetComponent<RectTransform>().transform.Rotate(
-                    0, 0, Time.deltaTime * 15f);
-            }
+        if (ObjectScript.lastDragged == null) return;
 
-            if (Input.GetKey(KeyCode.X))
-            {
-                ObjectScript.lastDragged.GetComponent<RectTransform>().transform.Rotate(
-                    0, 0, -Time.deltaTime * 15f);
-            }
+        var rect = ObjectScript.lastDragged.GetComponent<RectTransform>();
 
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                if(ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y < 0.9f)
-                {
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale = 
-                        new Vector3(
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x,
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y+0.005f,
-                        1f);
-                }
-            }
+        // Rotation
+        if (Input.GetKey(KeyCode.Z))
+            rect.Rotate(0, 0, rotateSpeed * Time.deltaTime);
 
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                if (ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y > 0.3f)
-                {
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale =
-                    new Vector3(
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x,
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y - 0.005f,
-                    1f);
-                }
+        if (Input.GetKey(KeyCode.X))
+            rect.Rotate(0, 0, -rotateSpeed * Time.deltaTime);
 
-            }
+        //  Scaling
+        Vector3 scale = rect.localScale;
 
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                if (ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x > 0.3f)
-                {
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale =
-                        new Vector3(
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x - 0.005f,
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y,
-                        1f);
-                }
-            }
+        if (Input.GetKey(KeyCode.UpArrow))
+            scale.y = Mathf.Clamp(scale.y + scaleSpeed * Time.deltaTime, minScale, maxScale);
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                if (ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x < 0.9f)
-                {
-                    ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale =
-                        new Vector3(
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.x + 0.005f,
-                        ObjectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y,
-                        1f);
-                }
-            }
+        if (Input.GetKey(KeyCode.DownArrow))
+            scale.y = Mathf.Clamp(scale.y - scaleSpeed * Time.deltaTime, minScale, maxScale);
 
-        }
+        if (Input.GetKey(KeyCode.RightArrow))
+            scale.x = Mathf.Clamp(scale.x + scaleSpeed * Time.deltaTime, minScale, maxScale);
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+            scale.x = Mathf.Clamp(scale.x - scaleSpeed * Time.deltaTime, minScale, maxScale);
+
+        rect.localScale = scale;
     }
 }
