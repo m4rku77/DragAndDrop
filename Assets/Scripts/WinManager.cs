@@ -69,20 +69,30 @@ public class WinManager : MonoBehaviour
 
     private bool AllCarsProcessed()
     {
-        foreach (string tag in carTags)
-        {
-            GameObject[] cars = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject car in cars)
-            {
-                if (car == null || !car.activeInHierarchy) continue;
+        var allDrags = FindObjectsByType<DragAndDropScript>(FindObjectsSortMode.None);
 
-                var drag = car.GetComponent<DragAndDropScript>();
-                if (drag != null && drag.enabled)
-                    return false;
-            }
+        int total = 0;
+        int remaining = 0;
+
+        foreach (var d in allDrags)
+        {
+            if (total >= maxCount) break;
+            if (d == null) continue;
+
+            total++;
+
+            // still not placed if drag script is enabled
+            if (d.enabled && d.gameObject.activeInHierarchy)
+                remaining++;
         }
-        return true;
+
+        Debug.Log($"Draggables processed: {total - remaining}/{total} (remaining: {remaining})");
+
+        //  consider complete when no draggables are left active/enabled
+        return remaining == 0;
     }
+
+
 
     private System.Collections.IEnumerator ShowWinWithDelay(float delay)
     {
@@ -93,46 +103,39 @@ public class WinManager : MonoBehaviour
 
     private (int starsEarned, int placedCars, int totalCars) CalculateStars()
     {
-        int totalCars = 0;
-        int placedCars = 0;
+        var allDrags = FindObjectsByType<DragAndDropScript>(FindObjectsSortMode.None);
 
-        foreach (string tag in carTags)
+        int total = 0;
+        int placed = 0;
+
+        foreach (var d in allDrags)
         {
-            if (totalCars >= maxCount) break;
+            if (total >= maxCount) break;
+            if (d == null) continue;
 
-            GameObject[] cars = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject car in cars)
+            if (!d.gameObject.activeInHierarchy)
             {
-                if (totalCars >= maxCount) break;
-                totalCars++;
-
-                if (car == null) continue;
-
-                var drag = car.GetComponent<DragAndDropScript>();
-
-                // ✅ Count as placed only if drag is disabled but car is still active
-                if (drag != null && !drag.enabled && car.activeInHierarchy)
-                {
-                    placedCars++;
-                }
+                // destroyed → does NOT count as placed
+                total++;
+                continue;
             }
+
+            total++;
+
+            // placed only if active AND drag is disabled
+            if (!d.enabled) placed++;
         }
 
-        if (totalCars == 0) return (0, 0, 0);
+        if (total == 0) return (0, 0, 0);
 
-        float completion = (float)placedCars / totalCars;
-        Debug.Log($"Completion: {completion:P0} ({placedCars}/{totalCars})");
+        float completion = (float)placed / total;
+        int stars = 0;
+        if (completion >= 0.9f && timeElapsed <= threeStarTime) stars = 3;
+        else if (completion >= 0.75f && timeElapsed <= twoStarTime) stars = 2;
+        else if (completion >= 0.5f) stars = 1;
 
-        int starsEarned = 0;
-
-        if (completion >= 0.9f && timeElapsed <= threeStarTime)
-            starsEarned = 3;
-        else if (completion >= 0.75f && timeElapsed <= twoStarTime)
-            starsEarned = 2;
-        else if (completion >= 0.5f)
-            starsEarned = 1;
-
-        return (starsEarned, placedCars, totalCars);
+        Debug.Log($"Stars calc: placed {placed}/{total} (completion {completion:P0})");
+        return (stars, placed, total);
     }
 
     private void AutoPlaceAllCars()
