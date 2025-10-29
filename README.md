@@ -47,7 +47,7 @@ Featuring cars, clouds, people, animals, and even flying obstacles — all power
 - [x] Create C# script for transformations 
 - [x] Create C# script for object fixation 
 - [x] Add nescessary sounds and audio sources 
-- [ ] Make cloud script work. They are not working properly. 
+- [x] Make cloud script work. They are not working properly. 
 - [x] Create logic for winning 
 - [x] Create camera script for zoom-in/out and implement camera restrictions 
 - [x] Create animated main menu with 3 buttons, sounds, animated objects 
