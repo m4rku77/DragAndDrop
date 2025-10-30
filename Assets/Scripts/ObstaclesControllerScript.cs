@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+// CHANGES FOR ANDROID
 public class ObstaclesControllerScript : MonoBehaviour
 {
     [HideInInspector]
@@ -57,28 +58,33 @@ public class ObstaclesControllerScript : MonoBehaviour
         }
 
         // Ja neko nevelk un kursors pieskaras bumbai
-        if(CompareTag("Bomb") && !isExploding && 
+        Vector2 inputPosition;
+        if (!TryGetInputPosition(out inputPosition))
+            return;
+
+
+        if (CompareTag("Bomb") && !isExploding &&
             RectTransformUtility.RectangleContainsScreenPoint(
-                rectTransform, Input.mousePosition, Camera.main))
+                rectTransform, inputPosition, Camera.main))
         {
             Debug.Log("Bomb hit by cursor (without dragging)");
             TriggerExplosion();
-        } 
+        }
 
 
-        if(ObjectScript.drag && !isFadingOut && 
+        if (ObjectScript.drag && !isFadingOut &&
             RectTransformUtility.RectangleContainsScreenPoint(
-                rectTransform, Input.mousePosition, Camera.main))
+                rectTransform, inputPosition, Camera.main))
         {
             Debug.Log("Obstacle hit by drag");
-           if(ObjectScript.lastDragged != null)
+            if (ObjectScript.lastDragged != null)
             {
                 StartCoroutine(ShrinkAndDestroy(ObjectScript.lastDragged, 0.5f));
                 ObjectScript.lastDragged = null;
                 ObjectScript.drag = false;
             }
 
-           if(CompareTag("Bomb"))
+            if (CompareTag("Bomb"))
                 StartToDestroy(Color.red);
 
             else
@@ -86,12 +92,32 @@ public class ObstaclesControllerScript : MonoBehaviour
         }
     }
 
+    bool TryGetInputPosition(out Vector2 position)
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        position = Input.mousePosition;
+        return true;
+
+#elif UNITY_ANDROID
+            if(Input.touchCount > 0)
+            {
+                position = Input.GetTouch(0).position;
+                return true;
+            }
+            else
+            {
+                position = Vector2.zero;
+                return false;
+            }
+#endif
+    }
+
     public void TriggerExplosion()
     {
         isExploding = true;
         objectScript.effects.PlayOneShot(objectScript.audioCli[6], 5f);
 
-        if(TryGetComponent<Animator>(out Animator animator))
+        if (TryGetComponent<Animator>(out Animator animator))
         {
             animator.SetBool("explode", true);
         }
@@ -106,7 +132,7 @@ public class ObstaclesControllerScript : MonoBehaviour
     IEnumerator WaitBeforeExplode()
     {
         float radius = 0;
-        if(TryGetComponent<CircleCollider2D>(out CircleCollider2D circleCollider))
+        if (TryGetComponent<CircleCollider2D>(out CircleCollider2D circleCollider))
         {
             radius = circleCollider.radius * transform.lossyScale.x;
             ExploadAndDestroyNearbyObjects(radius);
@@ -122,10 +148,10 @@ public class ObstaclesControllerScript : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            if(hit != null && hit.gameObject != gameObject)
+            if (hit != null && hit.gameObject != gameObject)
             {
                 ObstaclesControllerScript obj = hit.GetComponent<ObstaclesControllerScript>();
-                if(obj != null && !obj.isExploding)
+                if (obj != null && !obj.isExploding)
                 {
                     obj.StartToDestroy(Color.cyan);
                 }
@@ -135,7 +161,7 @@ public class ObstaclesControllerScript : MonoBehaviour
 
     public void StartToDestroy(Color c)
     {
-        if(!isFadingOut)
+        if (!isFadingOut)
         {
             StartCoroutine(FadeOutAndDestroy());
             isFadingOut = true;
@@ -151,7 +177,7 @@ public class ObstaclesControllerScript : MonoBehaviour
     IEnumerator FadeIn()
     {
         float a = 0f;
-        while(a < fadeDuration)
+        while (a < fadeDuration)
         {
             a += Time.deltaTime;
             canvasGroup.alpha = Mathf.Lerp(0f, 1f, a / fadeDuration);
@@ -183,7 +209,7 @@ public class ObstaclesControllerScript : MonoBehaviour
         Quaternion orginalRotation = target.transform.rotation;
         float t = 0f;
 
-        while(t < duration)
+        while (t < duration)
         {
             t += Time.deltaTime;
             target.transform.localScale = Vector3.Lerp(orginalScale, Vector3.zero, t / duration);
@@ -205,12 +231,16 @@ public class ObstaclesControllerScript : MonoBehaviour
 
     IEnumerator Vibrate()
     {
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
+
         Vector2 orginalPosition = rectTransform.anchoredPosition;
         float duration = 0.3f;
         float elpased = 0f;
         float intensity = 5f;
 
-        while(elpased < duration)
+        while (elpased < duration)
         {
             rectTransform.anchoredPosition = orginalPosition + Random.insideUnitCircle * intensity;
             elpased += Time.deltaTime;

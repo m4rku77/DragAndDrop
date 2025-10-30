@@ -6,21 +6,31 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private float placeZRot, vehicleZRot, rotDiff;
     private Vector3 placeSiz, vehicleSiz;
     private float xSizeDiff, ySizeDiff;
+
     public ObjectScript objScript;
+
+    void Start()
+    {
+        if (objScript == null)
+            objScript = Object.FindFirstObjectByType<ObjectScript>();
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null) return;
+        if (eventData.pointerDrag == null)
+            return;
 
         GameObject dragged = eventData.pointerDrag;
         RectTransform dragRect = dragged.GetComponent<RectTransform>();
         RectTransform placeRect = GetComponent<RectTransform>();
 
+        // rotation difference
         placeZRot = dragRect.eulerAngles.z;
         vehicleZRot = placeRect.eulerAngles.z;
         rotDiff = Mathf.Abs(placeZRot - vehicleZRot);
         if (rotDiff > 180) rotDiff = 360 - rotDiff;
 
+        // scale difference
         placeSiz = dragRect.localScale;
         vehicleSiz = placeRect.localScale;
         xSizeDiff = Mathf.Abs(placeSiz.x - vehicleSiz.x);
@@ -33,10 +43,8 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
         bool rotationOK = rotDiff <= 15f;
         bool scaleOK = xSizeDiff <= 0.15f && ySizeDiff <= 0.15f;
 
-        //  Must overlap and tag match to be valid
         if (dragged.CompareTag(tag) && closeEnough && rotationOK && scaleOK && overlaps)
         {
-            Debug.Log($"Correct placement for {dragged.name}");
             objScript.rightPlace = true;
 
             dragRect.anchoredPosition = placeRect.anchoredPosition;
@@ -44,7 +52,6 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
             dragRect.localScale = placeRect.localScale;
 
             dragRect.SetSiblingIndex(transform.parent.childCount - 2);
-
 
             var dragComp = dragged.GetComponent<DragAndDropScript>();
             if (dragComp != null) dragComp.enabled = false;
@@ -54,39 +61,32 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
 
             ObjectScript.lastDragged = dragged;
             PlayCorrectSound(dragged.tag);
-
-
         }
         else
         {
-            Debug.Log($"Incorrect placement for {dragged.name}");
             objScript.rightPlace = false;
             objScript.effects.PlayOneShot(objScript.audioCli[1]);
             ResetToStart(dragged);
         }
     }
 
-    // Helper: check if two RectTransforms overlap
-    private bool RectOverlaps(RectTransform a, RectTransform b)
+    bool RectOverlaps(RectTransform a, RectTransform b)
     {
-        Rect ra = GetScreenRect(a);
-        Rect rb = GetScreenRect(b);
+        Rect ra = ScreenRect(a);
+        Rect rb = ScreenRect(b);
         return ra.Overlaps(rb);
     }
 
-    // Converts RectTransform to screen rect
-    private Rect GetScreenRect(RectTransform rect)
+    Rect ScreenRect(RectTransform rect)
     {
         Vector3[] corners = new Vector3[4];
         rect.GetWorldCorners(corners);
-        Vector3 min = corners[0];
-        Vector3 max = corners[2];
-        return new Rect(min.x, min.y, max.x - min.x, max.y - min.y);
+        return new Rect(corners[0].x, corners[0].y,
+                        corners[2].x - corners[0].x,
+                        corners[2].y - corners[0].y);
     }
 
-
-    //  Play correct placement sound
-    private void PlayCorrectSound(string tag)
+    void PlayCorrectSound(string tag)
     {
         switch (tag)
         {
@@ -102,30 +102,24 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
             case "police": objScript.effects.PlayOneShot(objScript.audioCli[11]); break;
             case "cement": objScript.effects.PlayOneShot(objScript.audioCli[12]); break;
             case "bus": objScript.effects.PlayOneShot(objScript.audioCli[13]); break;
-            default: Debug.Log("Unknown tag detected (correct placement)"); break;
+            default: break;
         }
     }
 
-    //  Reset object to its starting position if placed wrong
-    private void ResetToStart(GameObject go)
+    void ResetToStart(GameObject go)
     {
-        CanvasGroup cg = go.GetComponent<CanvasGroup>();
+        var cg = go.GetComponent<CanvasGroup>();
         if (cg != null)
         {
-            cg.blocksRaycasts = true; // make sure it can be dragged again
+            cg.blocksRaycasts = true;
             cg.alpha = 1f;
         }
 
-        int index = System.Array.FindIndex(objScript.vehicles, v => v == go);
-        if (index >= 0 && index < objScript.startCoordinates.Length)
+        int i = System.Array.FindIndex(objScript.vehicles, v => v == go);
+        if (i >= 0)
         {
-            go.GetComponent<RectTransform>().localPosition = objScript.startCoordinates[index];
+            go.GetComponent<RectTransform>().localPosition = objScript.startCoordinates[i];
             ObjectScript.lastDragged = null;
-            Debug.Log($" {go.name} reset to start position.");
-        }
-        else
-        {
-            Debug.LogWarning($" Reset failed: {go.name} not found in objScript.vehicles.");
         }
     }
 }
