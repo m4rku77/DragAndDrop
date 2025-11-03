@@ -8,6 +8,8 @@ public class ScreenBoundriesScript : MonoBehaviour
     [Header("World Limits (Edit for your level size)")]
     public Rect worldBounds = new Rect(-960, -540, 1920, 1080);
 
+
+
     [Range(0f, 0.5f)]
     public float padding = 0.02f;
 
