@@ -48,15 +48,7 @@ public class WinManager : MonoBehaviour
 
         timeElapsed += Time.deltaTime;
 
-        // 🧩 DEBUG: Press "P" to instantly win (auto place all cars)
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("✅ DEBUG: Auto-placing all cars...");
-            AutoPlaceAllCars();
-            StartCoroutine(AutoWinAfterDelay(0.5f));
-            gameEnded = true; // 🛑 stops further checks so it won't recalculate wrong
-            return;
-        }
+       
 
         // ✅ Check win condition only if P not pressed
         if (AllCarsProcessed())
@@ -99,6 +91,14 @@ public class WinManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         (int starsEarned, int placedCars, int totalCars) = CalculateStars();
         ShowWinScreen(starsEarned, placedCars, totalCars);
+    }
+
+    public void DebugMobileWin()
+    {
+        Debug.Log("✅ DEBUG: Mobile auto-win");
+        AutoPlaceAllCars();
+        StartCoroutine(AutoWinAfterDelay(0.5f));
+        gameEnded = true;
     }
 
     private (int starsEarned, int placedCars, int totalCars) CalculateStars()

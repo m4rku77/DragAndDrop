@@ -8,8 +8,6 @@ public class ScreenBoundriesScript : MonoBehaviour
     [Header("World Limits (Edit for your level size)")]
     public Rect worldBounds = new Rect(-960, -540, 1920, 1080);
 
-
-
     [Range(0f, 0.5f)]
     public float padding = 0.02f;
 
@@ -65,27 +63,13 @@ public class ScreenBoundriesScript : MonoBehaviour
         float halfH = targetCamera.orthographicSize;
         float halfW = halfH * targetCamera.aspect;
 
-        // Horizontal camera clamp
-        if (halfW * 2f >= (wbMaxX - wbMinX))
-        {
-            minCamX = maxCamX = (wbMinX + wbMaxX) * 0.5f;
-        }
-        else
-        {
-            minCamX = wbMinX + halfW;
-            maxCamX = wbMaxX - halfW;
-        }
+        // Always clamp horizontally
+        minCamX = wbMinX + halfW;
+        maxCamX = wbMaxX - halfW;
 
-        // Vertical camera clamp
-        if (halfH * 2f >= (wbMaxY - wbMinY))
-        {
-            minCamY = maxCamY = (wbMinY + wbMaxY) * 0.5f;
-        }
-        else
-        {
-            minCamY = wbMinY + halfH;
-            maxCamY = wbMaxY - halfH;
-        }
+        // Always clamp vertically (fix for Android empty bottom view)
+        minCamY = wbMinY + halfH;
+        maxCamY = wbMaxY - halfH;
 
         lastOrthoSize = targetCamera.orthographicSize;
         lastAspect = targetCamera.aspect;

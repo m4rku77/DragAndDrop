@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 // CHANGES FOR ANDROID
 public class CameraScript : MonoBehaviour
 {
-    public float maxZoom = 530f, minZoom = 150f;
+    public float maxZoom = 530f, minZoom = 250f;
     public float puncZoomSpeed = 0.9f, mouseZoomSpeed = 150f;
     public float mouseFollowSpeed = 1f, touchPanSpeed = 1f;
     public ScreenBoundriesScript screenBoundries;
