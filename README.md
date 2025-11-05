@@ -57,6 +57,6 @@ Featuring cars, clouds, people, animals, and even flying obstacles — all power
 - [x] Change target platform to Android
 - [ ] Replace all mouse input with touch
 - [x] Fix camera max zoom
-- [] Add interstitial ad
-- [] Add rewarded ad
-- [] Add banner ad
+- [ ] Add interstitial ad
+- [ ] Add rewarded ad
+- [ ] Add banner ad
