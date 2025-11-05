@@ -40,18 +40,23 @@ Featuring cars, clouds, people, animals, and even flying obstacles — all power
 ---
 
 ## To do list: - 
-- [x] Create the nescessary folders 
-- [x] Add nescessary assets 
-- [x] Add cars on the map 
-- [x] Create C# script for drag and drop 
-- [x] Create C# script for transformations 
-- [x] Create C# script for object fixation 
-- [x] Add nescessary sounds and audio sources 
-- [x] Make cloud script work. They are not working properly. 
-- [x] Create logic for winning 
-- [x] Create camera script for zoom-in/out and implement camera restrictions 
-- [x] Create animated main menu with 3 buttons, sounds, animated objects 
-- [x] Create C# script for scene change and quit option 
-- [x] Create game timer 
-- [ ] Add animated clouds, vehicles, people, animals, etc. 
-- [x] Add flyig obstacles in a city scene
+- [x] Create the necessary folders
+- [x] Add necessary assets
+- [x] Add cars on the map
+- [x] Create C# script for drag and drop
+- [x] Create C# script for transformation
+- [x] Create C# script for object fixation
+- [x] Add necessary sounds and audio sources
+- [x] Create logic for winning
+- [x] Create camera script for zoom-in/out and camera restrictions
+- [x] Create animated main menu with 3 buttons, sounds, animated objects
+- [x] Create C# script for scene change and quit option
+- [x] Create game timer (HH:MM:SS)
+- [ ] Add animated clouds, vehicles, people, animals etc.
+- [x] Add flying obstacles with destroy effects
+- [x] Change target platform to Android
+- [ ] Replace all mouse input with touch
+- [x] Fix camera max zoom
+- [] Add interstitial ad
+- [] Add rewarded ad
+- [] Add banner ad
