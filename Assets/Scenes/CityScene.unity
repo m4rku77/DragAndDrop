@@ -1499,12 +1499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minZoom: 150
-  puncZoomSpeed: 0.9
+  pinchZoomSpeed: 0.9
   mouseZoomSpeed: 150
-  mouseFollowSpeed: 1
   touchPanSpeed: 1
-  screenBoundries: {fileID: 1310376412}
+  mouseFollowSpeed: 1
   cam: {fileID: 519420031}
+  screenBoundries: {fileID: 1310376412}
   doubleTapMaxDelay: 0.4
   doubleTapMaxDistance: 100
 --- !u!1 &654533120
@@ -1911,10 +1911,10 @@ RectTransform:
   - {fileID: 481639374}
   m_Father: {fileID: 2091275307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 181, y: 234}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: -1070, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &930282527
 GameObject:
@@ -1948,10 +1948,10 @@ RectTransform:
   - {fileID: 1276178939}
   m_Father: {fileID: 2091275307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -239, y: 212.52}
-  m_SizeDelta: {x: 140, y: 142.9675}
+  m_SizeDelta: {x: -1030, y: 142.9675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &973308866
 GameObject:
