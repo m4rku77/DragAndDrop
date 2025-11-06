@@ -17,6 +17,7 @@ TagManager:
   - cement
   - bus
   - Garbage
+  - InterstitialAdButton
   layers:
   - Default
   - TransparentFX
