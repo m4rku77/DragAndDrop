@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
     [SerializeField] string _androidGameId;
@@ -12,7 +11,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 
     private void Awake()
     {
-        InitializeAds();        
+        InitializeAds();
     }
 
     public void InitializeAds()
@@ -20,19 +19,19 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 #if UNITY_ANDROID || UNITY_EDITOR
         _gameId = _androidGameId;
 #endif
+
         if (!Advertisement.isInitialized && Advertisement.isSupported)
             Advertisement.Initialize(_gameId, _testMode, this);
     }
 
     public void OnInitializationComplete()
     {
-        Debug.Log("Unity ads initialize complete! ");
+        Debug.Log("Unity ads initialization complete!");
         OnAdsInitialized?.Invoke();
     }
 
-
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        Debug.LogWarning("Unity ads initialize not complete! ");
+        Debug.LogWarning($"Unity ads initialization failed: {error.ToString()} - {message}");
     }
 }
