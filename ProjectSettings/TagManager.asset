@@ -18,6 +18,16 @@ TagManager:
   - bus
   - Garbage
   - InterstitialAdButton
+  - 0block
+  - 1block
+  - 2block
+  - 3block
+  - 4block
+  - 5block
+  - leftstick
+  - middlestick
+  - rightstick
+  - floor
   layers:
   - Default
   - TransparentFX
