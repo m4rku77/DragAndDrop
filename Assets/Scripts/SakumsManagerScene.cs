@@ -28,7 +28,7 @@ public class SakumsManagerScene : MonoBehaviour
     public void LoadLimenis2()
     {
         PlayClickSound();
-        SceneManager.LoadScene("LoadOtherLevelScene"); // name of your second level scene
+        SceneManager.LoadScene("HanojasTornis"); // name of your second level scene
     }
 
     public void Iziet()
