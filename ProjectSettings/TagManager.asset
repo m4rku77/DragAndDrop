@@ -28,6 +28,7 @@ TagManager:
   - middlestick
   - rightstick
   - floor
+  - RewardedButton
   layers:
   - Default
   - TransparentFX
@@ -36,8 +37,8 @@ TagManager:
   - Water
   - UI
   - but
-  - 
-  - 
+  - stick
+  - block
   - 
   - 
   - 
