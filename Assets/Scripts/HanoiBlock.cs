@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -11,8 +13,9 @@ public class HanoiBlock : MonoBehaviour
 
     [Header("Settings")]
     public float stickSnapTolerance = 0.5f;
-    public LayerMask stickLayer;
-    public LayerMask blockLayer;
+    public float slideSpeed = 5f; // speed of sliding to stick
+    public LayerMask stickLayer;  // layer for sticks (trigger only)
+    public LayerMask blockLayer;  // layer for blocks including floor
 
     void Start()
     {
@@ -20,7 +23,7 @@ public class HanoiBlock : MonoBehaviour
         cam = Camera.main;
 
         rb.freezeRotation = true;
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // prevent tunneling
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
     void OnMouseDown()
@@ -41,7 +44,6 @@ public class HanoiBlock : MonoBehaviour
 
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector3 targetPos = new Vector3(mousePos.x + mouseOffset.x, mousePos.y + mouseOffset.y, transform.position.z);
-
         rb.MovePosition(targetPos);
     }
 
@@ -52,37 +54,42 @@ public class HanoiBlock : MonoBehaviour
         isDragging = false;
         rb.gravityScale = 1;
 
-        // Check for stick snap
+        // Check for nearby stick
         Collider2D stick = Physics2D.OverlapCircle(transform.position, stickSnapTolerance, stickLayer);
         if (stick)
         {
-            TrySnapToStick(stick.transform);
+            Vector3 targetPos = stick.transform.position;
+
+            // Get top block on the stick to stack above it
+            targetPos.y = GetLowestAvailableY(stick.transform);
+
+
+            // Slide smoothly to target position
+            StartCoroutine(SlideToStick(targetPos, slideSpeed));
         }
     }
 
-    void TrySnapToStick(Transform stick)
+    IEnumerator SlideToStick(Vector3 targetPosition, float speed)
     {
-        GameObject topBlock = GetTopBlockOnStick(stick);
+        rb.gravityScale = 0;
+        rb.linearVelocity = Vector2.zero;
 
-        if (topBlock != null)
+        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
-            int mySize = GetBlockSize();
-            int topSize = GetBlockSize(topBlock);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            yield return null;
+        }
 
-            if (mySize < topSize)
-            {
-                SnapAboveBlock(topBlock);
-            }
-        }
-        else
-        {
-            // Snap to base of stick
-            Vector3 pos = stick.position;
-            pos.y = stick.position.y + 0.5f;
-            transform.position = pos;
-            rb.linearVelocity = Vector2.zero;
-            rb.gravityScale = 1;
-        }
+        transform.position = targetPosition;
+        rb.gravityScale = 1;
+    }
+
+    bool IsTopBlock()
+    {
+        // Raycast slightly up to see if any block is above
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.up * 0.1f, Vector2.up, 0.2f, blockLayer);
+        if (hit.collider == null) return true;
+        return !hit.collider.isTrigger;
     }
 
     GameObject GetTopBlockOnStick(Transform stick)
@@ -93,7 +100,7 @@ public class HanoiBlock : MonoBehaviour
 
         foreach (var c in nearby)
         {
-            if (c.transform.position.y > highestY)
+            if (c.transform.position.y > highestY && c.gameObject != gameObject)
             {
                 highestY = c.transform.position.y;
                 top = c.gameObject;
@@ -103,57 +110,45 @@ public class HanoiBlock : MonoBehaviour
         return top;
     }
 
-    void SnapAboveBlock(GameObject lowerBlock)
-    {
-        Vector3 pos = lowerBlock.transform.position;
-        float height = lowerBlock.GetComponent<BoxCollider2D>().bounds.size.y;
-        pos.y += height;
-        transform.position = pos;
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 1;
-    }
-
-    bool IsTopBlock()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.up * 0.2f, Vector2.up, 0.5f, blockLayer);
-        return hit.collider == null;
-    }
-
-    int GetBlockSize()
-    {
-        string num = System.Text.RegularExpressions.Regex.Replace(gameObject.tag, "[^0-9]", "");
-        if (int.TryParse(num, out int size))
-            return size;
-        return 0;
-    }
-
-    int GetBlockSize(GameObject obj)
-    {
-        string num = System.Text.RegularExpressions.Regex.Replace(obj.tag, "[^0-9]", "");
-        if (int.TryParse(num, out int size))
-            return size;
-        return 0;
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Debug logs for testing
-        Debug.Log(gameObject.name + " collided with: " + collision.gameObject.name);
-
-        // Floor collision
+        // Snap to floor if touched
         if (collision.gameObject.CompareTag("floor"))
         {
-            Debug.Log(gameObject.name + " hit the floor!");
-
-            rb.linearVelocity = Vector2.zero;
-            rb.gravityScale = 0;
-
-            // Snap on top of floor
             Vector3 pos = transform.position;
             float floorTop = collision.collider.bounds.max.y;
             float blockHeight = GetComponent<BoxCollider2D>().bounds.size.y;
             pos.y = floorTop + blockHeight / 2f;
             transform.position = pos;
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 1;
         }
     }
+
+    float GetLowestAvailableY(Transform stick)
+    {
+        float blockHeight = GetComponent<BoxCollider2D>().bounds.size.y;
+
+        // Find all blocks in the blockLayer
+        Collider2D[] allBlocks = GameObject.FindObjectsOfType<HanoiBlock>()
+            .Select(b => b.GetComponent<Collider2D>())
+            .Where(c => ((1 << c.gameObject.layer) & blockLayer) != 0 && c.gameObject != gameObject)
+            .ToArray();
+
+        float highestY = stick.position.y; // start at stick bottom
+
+        foreach (var c in allBlocks)
+        {
+            // check if block is “on this stick” (close enough in X)
+            if (Mathf.Abs(c.transform.position.x - stick.position.x) < 0.5f)
+            {
+                float cTop = c.bounds.max.y;
+                if (cTop > highestY)
+                    highestY = cTop;
+            }
+        }
+
+        return highestY + blockHeight / 2f;
+    }
+
 }
