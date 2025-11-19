@@ -29,6 +29,7 @@ TagManager:
   - rightstick
   - floor
   - RewardedButton
+  - BannerButton
   layers:
   - Default
   - TransparentFX
