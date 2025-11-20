@@ -76,9 +76,16 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         //if (placementId.Equals(_adUnitId) &&
         //  showCompletionState.Equals(UnityAdsCompletionState.COMPLETED)) {
         Debug.Log("Rewarded ad completed!");
-        flyingObjectManager.DestroyAllFlyingObjects();
+
+        // Only destroy flying objects if there is a manager assigned
+        if (flyingObjectManager != null)
+        {
+            flyingObjectManager.DestroyAllFlyingObjects();
+        }
+
         _rewardedAdButton.interactable = false;
         StartCoroutine(WaitAndLoad(10f));
+
         // }
 
         Time.timeScale = 1f;

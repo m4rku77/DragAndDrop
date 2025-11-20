@@ -11,7 +11,7 @@ public class CityTimerManager : MonoBehaviour
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "CityScene")
+        if (SceneManager.GetActiveScene().name == "HanojasTornis")
         {
             isTracking = true;
         }
@@ -27,7 +27,7 @@ public class CityTimerManager : MonoBehaviour
             {
                 int minutes = Mathf.FloorToInt(playTime / 60);
                 int seconds = Mathf.FloorToInt(playTime % 60);
-                timerText.text = $"Time: {minutes:00}:{seconds:00}";
+                timerText.text = $"{minutes:00}:{seconds:00}";
             }
         }
     }
