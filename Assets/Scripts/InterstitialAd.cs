@@ -97,18 +97,8 @@ public class InterstitialAd : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSho
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
-        {
-            Debug.Log("Interstitial ad watched completely!");
-            StartCoroutine(SlowDownTimeTemporarily(30f));
-            LoadAd();
-
-        }
-        else
-        {
-            Debug.Log("Interstitial ad skipped or status ir unknown!");
-            LoadAd();
-        }
+        Time.timeScale = 1f;   // ensure speed returns to normal
+        LoadAd();
     }
 
     private IEnumerator SlowDownTimeTemporarily(float seconds)
