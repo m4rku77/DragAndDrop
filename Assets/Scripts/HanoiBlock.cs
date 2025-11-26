@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,9 +14,15 @@ public class HanoiBlock : MonoBehaviour
 
     [Header("Settings")]
     public float stickSnapTolerance = 10f;
-    public float fallSpeed = 90f; // fast fall speed
-    public LayerMask stickLayer;  // layer for sticks (trigger only)
-    public LayerMask blockLayer;  // layer for blocks including floor
+    public float fallSpeed = 90f;
+    public LayerMask stickLayer;
+    public LayerMask blockLayer;
+    public float dragSmooth = 100f;
+
+    [Header("Audio")]
+    public AudioClip fallSound;
+    public AudioClip clickSound;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -27,10 +33,20 @@ public class HanoiBlock : MonoBehaviour
         rb.freezeRotation = true;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.gravityScale = 0;
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+        audioSource.playOnAwake = false;
     }
 
     void OnMouseDown()
     {
+        // Play click sound
+        if (clickSound != null)
+            audioSource.PlayOneShot(clickSound);
+
         if (!IsTopBlock()) return;
 
         lastValidPosition = transform.position;
@@ -42,24 +58,18 @@ public class HanoiBlock : MonoBehaviour
         mouseOffset = transform.position - mousePos;
     }
 
-    public float dragSmooth = 100f; // higher = more responsive
-
     void OnMouseDrag()
     {
         if (!isDragging) return;
 
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Mathf.Abs(cam.transform.position.z - transform.position.z); // distance to camera
+        mousePos.z = Mathf.Abs(cam.transform.position.z - transform.position.z);
         Vector3 worldPos = cam.ScreenToWorldPoint(mousePos);
         worldPos += mouseOffset;
         worldPos.z = transform.position.z;
 
-        // **Directly set Transform.position for instant response**
         transform.position = worldPos;
     }
-
-
-
 
     void OnMouseUp()
     {
@@ -67,30 +77,31 @@ public class HanoiBlock : MonoBehaviour
         isDragging = false;
 
         BoxCollider2D myBox = GetComponent<BoxCollider2D>();
-        Vector2 bottomPos = new Vector2(transform.position.x, transform.position.y - myBox.bounds.extents.y);
 
-        // Check all sticks overlapping the block bottom
-        Collider2D stick = Physics2D.OverlapCircle(bottomPos, stickSnapTolerance, stickLayer);
+        // Wider / more forgiving detection at the bottom
+        float extraWidth = 0.2f;
+        Vector2 checkSize = new Vector2(myBox.bounds.size.x + extraWidth, 0.3f);
+        Vector2 checkCenter = new Vector2(
+            myBox.bounds.center.x,
+            myBox.bounds.min.y + checkSize.y * 0.5f
+        );
+
+        // Check any stick overlapping near the bottom of the block
+        Collider2D stick = Physics2D.OverlapBox(checkCenter, checkSize, 0f, stickLayer);
 
         if (stick != null)
         {
-            // Snap X immediately to stick center for proper fall
             Vector3 pos = transform.position;
             pos.x = stick.transform.position.x;
             transform.position = pos;
 
-            // Start falling
             StartCoroutine(FallAnimation());
         }
         else
         {
-            // Not touching stick -> revert
             transform.position = lastValidPosition;
         }
     }
-
-
-
 
     bool IsTopBlock()
     {
@@ -113,6 +124,10 @@ public class HanoiBlock : MonoBehaviour
 
     private IEnumerator FallAnimation()
     {
+        // Play fall sound
+        if (fallSound != null)
+            audioSource.PlayOneShot(fallSound);
+
         rb.linearVelocity = Vector2.zero;
 
         float liftAmount = 0.3f;
@@ -121,7 +136,6 @@ public class HanoiBlock : MonoBehaviour
         Vector3 start = transform.position;
         Vector3 end = start + Vector3.up * liftAmount;
 
-        // Lift slightly
         float t = 0f;
         while (t < 1f)
         {
@@ -135,39 +149,57 @@ public class HanoiBlock : MonoBehaviour
 
         while (true)
         {
-            // Move down manually
             transform.position += Vector3.down * fallSpeed * Time.unscaledDeltaTime;
 
             Vector2 bottomPos = new Vector2(transform.position.x, transform.position.y - halfHeight - 0.01f);
-
-            // Check for any stick below with the block's width
             Vector2 boxSize = new Vector2(myBox.bounds.size.x, 0.1f);
-            Collider2D stickBelow = Physics2D.OverlapBox(bottomPos, boxSize, 0f, stickLayer);
 
+            // Align with stick below if any
+            Collider2D stickBelow = Physics2D.OverlapBox(bottomPos, boxSize, 0f, stickLayer);
             if (stickBelow != null)
             {
-                // Snap X to stick center for a proper landing
-                transform.position = new Vector3(stickBelow.transform.position.x, transform.position.y, transform.position.z);
+                transform.position = new Vector3(
+                    stickBelow.transform.position.x,
+                    transform.position.y,
+                    transform.position.z
+                );
             }
 
             // Check for blocks or floor below
             RaycastHit2D hit = Physics2D.BoxCast(bottomPos, boxSize, 0f, Vector2.down, 0.05f, blockLayer);
             if (hit.collider != null)
             {
-                // Tower of Hanoi rule
+                // Tower of Hanoi rule:
+                // You CANNOT place a bigger block on a smaller block.
                 if (TryGetBlockSize(tag, out int currentSize) &&
                     TryGetBlockSize(hit.collider.tag, out int belowSize))
                 {
-                    if (currentSize < belowSize)
+                    Debug.Log($"Trying to place {tag} (size {currentSize}) on {hit.collider.tag} (size {belowSize})");
+
+                    if (currentSize > belowSize)
                     {
                         // Invalid move -> revert
+                        Debug.Log("Invalid move: bigger on smaller. Reverting.");
                         transform.position = lastValidPosition;
                         break;
                     }
                 }
 
                 float top = hit.collider.bounds.max.y;
-                transform.position = new Vector3(transform.position.x, top + halfHeight, transform.position.z);
+                transform.position = new Vector3(
+                    transform.position.x,
+                    top + halfHeight,
+                    transform.position.z
+                );
+
+                // Valid move finished here – count it
+                if (MoveCounter.Instance != null)
+                    MoveCounter.Instance.AddMove();
+
+                // Check win condition after a successful placement
+                if (HanoiWinManager.Instance != null)
+                    HanoiWinManager.Instance.CheckWin();
+
                 break;
             }
 
@@ -175,16 +207,22 @@ public class HanoiBlock : MonoBehaviour
         }
     }
 
-    // Helper method to safely parse block tag
+    // 0block is biggest, 1block is second biggest, etc
     private bool TryGetBlockSize(string tag, out int size)
-        {
-            size = -1;
-            if (tag.EndsWith("block"))
-            {
-                string numberPart = tag.Replace("block", "");
-                return int.TryParse(numberPart, out size);
-            }
-            return false;
-        }
+    {
+        size = -1;
 
+        if (!tag.EndsWith("block"))
+            return false;
+
+        string num = tag.Replace("block", "");
+        if (!int.TryParse(num, out int index))
+            return false;
+
+        // Bigger physical block => bigger "size" number
+        // 0block -> 100, 1block -> 99, 2block -> 98, ...
+        size = 100 - index;
+
+        return true;
     }
+}
