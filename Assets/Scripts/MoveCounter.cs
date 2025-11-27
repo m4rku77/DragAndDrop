@@ -41,6 +41,7 @@ public class MoveCounter : MonoBehaviour
     private void UpdateText()
     {
         if (movesText != null)
-            movesText.text = "" + moves;
+            movesText.text = moves.ToString();  // works for negative numbers too
     }
+
 }

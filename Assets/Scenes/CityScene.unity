@@ -565,8 +565,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -301, y: -245}
-  m_SizeDelta: {x: 437.21997, y: 59.397583}
+  m_AnchoredPosition: {x: -203, y: -265}
+  m_SizeDelta: {x: 283.3406, y: 85.4381}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &225223393
 GameObject:
@@ -878,13 +878,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350995009}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.0069590313, y: -0, z: -0, w: 0.9999758}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1086768096}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.797, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -97.16846, y: 0.00024414062}
@@ -1421,8 +1421,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -301, y: -171.58899}
-  m_SizeDelta: {x: 437.21997, y: 59.397583}
+  m_AnchoredPosition: {x: -203, y: -159.40485}
+  m_SizeDelta: {x: 283.3406, y: 85.4381}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &474843137
 MonoBehaviour:
@@ -1823,7 +1823,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 99.466, y: -618}
+  m_AnchoredPosition: {x: -1247, y: 1167}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &595499755
@@ -1923,7 +1923,7 @@ MonoBehaviour:
   _androidAdUnitId: Banner_Android
   _bannerButton: {fileID: 595499755}
   isBannerVisible: 0
-  _bannerPosition: 4
+  _bannerPosition: 1
 --- !u!1 &654533120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2396,12 +2396,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b073173775b80d64c82f53b930264057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adsInitializer: {fileID: 0}
-  interstitialAd: {fileID: 0}
+  adsInitializer: {fileID: 876812247}
+  interstitialAd: {fileID: 876812246}
   turnOffInterstitialAd: 0
-  rewardedAds: {fileID: 0}
+  rewardedAds: {fileID: 876812251}
   turnOffRewardedAds: 0
-  BannerAd: {fileID: 0}
+  BannerAd: {fileID: 876812250}
   turnOffBannerAds: 0
 --- !u!4 &876812249
 Transform:
@@ -2433,7 +2433,7 @@ MonoBehaviour:
   _androidAdUnitId: Banner_Android
   _bannerButton: {fileID: 595499755}
   isBannerVisible: 1
-  _bannerPosition: 6
+  _bannerPosition: 1
 --- !u!114 &876812251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2449,6 +2449,7 @@ MonoBehaviour:
   _androidAdUnitId: Rewarded_Android
   _rewardedAdButton: {fileID: 903472522}
   flyingObjectManager: {fileID: 876812252}
+  moveCounter: {fileID: 0}
 --- !u!114 &876812252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2497,7 +2498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 99.466, y: -369}
+  m_AnchoredPosition: {x: 100, y: -99.455}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &903472522
@@ -2597,6 +2598,7 @@ MonoBehaviour:
   _androidAdUnitId: Rewarded_Android
   _rewardedAdButton: {fileID: 903472522}
   flyingObjectManager: {fileID: 0}
+  moveCounter: {fileID: 0}
 --- !u!1 &930282527
 GameObject:
   m_ObjectHideFlags: 0
@@ -3881,8 +3883,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESTART
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 007cdbeb1b940004a92ea5e210904ece, type: 2}
+  m_sharedMaterial: {fileID: 6441122130586442264, guid: 007cdbeb1b940004a92ea5e210904ece, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5346,7 +5348,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -100}
+  m_AnchoredPosition: {x: -1611, y: 1167}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1554824953
@@ -6555,8 +6557,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: MENU
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 007cdbeb1b940004a92ea5e210904ece, type: 2}
+  m_sharedMaterial: {fileID: 6441122130586442264, guid: 007cdbeb1b940004a92ea5e210904ece, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -22,9 +22,12 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         if (flyingObjectManager == null)
             flyingObjectManager = FindFirstObjectByType<FlyingObjectManager>();
 
-        if (moveCounter == null)    // ✅ ADD THIS
+        if (moveCounter == null)
             moveCounter = FindFirstObjectByType<MoveCounter>();
+
+        DontDestroyOnLoad(gameObject); // ✅ persist
     }
+
 
 
     public void LoadAd()

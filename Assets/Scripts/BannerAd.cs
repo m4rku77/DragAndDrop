@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BannerAd : MonoBehaviour
@@ -16,6 +17,14 @@ public class BannerAd : MonoBehaviour
     {
         _adUnitId = _androidAdUnitId;
         Advertisement.Banner.SetPosition(_bannerPosition);
+    }
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "CityScene")
+        {
+            LoadBanner(); // load banner only in CityScene
+        }
     }
 
     public void LoadBanner()
