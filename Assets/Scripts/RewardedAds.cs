@@ -1,7 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
@@ -10,6 +12,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     [SerializeField] Button _rewardedAdButton;
     public FlyingObjectManager flyingObjectManager;
+    public MoveCounter moveCounter;   // ✅ ADD THIS
 
 
     private void Awake()
@@ -18,7 +21,11 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
         if (flyingObjectManager == null)
             flyingObjectManager = FindFirstObjectByType<FlyingObjectManager>();
+
+        if (moveCounter == null)    // ✅ ADD THIS
+            moveCounter = FindFirstObjectByType<MoveCounter>();
     }
+
 
     public void LoadAd()
     {
@@ -72,12 +79,18 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-
-        //if (placementId.Equals(_adUnitId) &&
-        //  showCompletionState.Equals(UnityAdsCompletionState.COMPLETED)) {
         Debug.Log("Rewarded ad completed!");
 
-        // Only destroy flying objects if there is a manager assigned
+        // ✅ Only in HanojasTornis and only if fully watched
+        if (SceneManager.GetActiveScene().name == "HanojasTornis" &&
+            showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        {
+            if (moveCounter != null)
+            {
+                moveCounter.RemoveMoves(5);   // ✅ HERE IS -5 MOVES
+            }
+        }
+
         if (flyingObjectManager != null)
         {
             flyingObjectManager.DestroyAllFlyingObjects();
@@ -86,10 +99,9 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         _rewardedAdButton.interactable = false;
         StartCoroutine(WaitAndLoad(10f));
 
-        // }
-
         Time.timeScale = 1f;
     }
+
 
     public void SetButton(Button button)
     {

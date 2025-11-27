@@ -32,6 +32,11 @@ public class MoveCounter : MonoBehaviour
         moves = 0;
         UpdateText();
     }
+    public void RemoveMoves(int amount)
+    {
+        moves = Mathf.Max(0, moves - amount);
+        UpdateText();
+    }
 
     private void UpdateText()
     {
