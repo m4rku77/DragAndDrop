@@ -4,7 +4,6 @@ using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-
 public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
@@ -12,23 +11,34 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     [SerializeField] Button _rewardedAdButton;
     public FlyingObjectManager flyingObjectManager;
-    public MoveCounter moveCounter;   // ✅ ADD THIS
 
-
-    private void Awake()
+    void Awake()
     {
         _adUnitId = _androidAdUnitId;
 
+        // Persist this object across scenes
+        DontDestroyOnLoad(gameObject);
+
+        // First lookup (for the initial scene)
         if (flyingObjectManager == null)
             flyingObjectManager = FindFirstObjectByType<FlyingObjectManager>();
 
-        if (moveCounter == null)
-            moveCounter = FindFirstObjectByType<MoveCounter>();
-
-        DontDestroyOnLoad(gameObject); // ✅ persist
+        // Subscribe to scene loaded so we can refresh references
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
+    // Called every time a new scene is loaded
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Re-find FlyingObjectManager in the new scene
+        flyingObjectManager = FindFirstObjectByType<FlyingObjectManager>();
+        Debug.Log($"[RewardedAds] Scene loaded: {scene.name}, FlyingObjectManager found: { (flyingObjectManager != null) }");
+    }
 
     public void LoadAd()
     {
@@ -46,7 +56,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         Debug.Log("Rewarded ad loaded!");
 
-        if (placementId.Equals(_adUnitId))
+        if (placementId.Equals(_adUnitId) && _rewardedAdButton != null)
         {
             _rewardedAdButton.interactable = true;
         }
@@ -54,7 +64,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
     {
-        Debug.LogWarning("Failed to load rewarded ad!");
+        Debug.LogWarning($"Failed to load rewarded ad! {error}: {message}");
         StartCoroutine(WaitAndLoad(5f));
     }
 
@@ -66,7 +76,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
     {
-        Debug.LogWarning("Failed to show rewarded ad!");
+        Debug.LogWarning($"Failed to show rewarded ad! {error}: {message}");
         StartCoroutine(WaitAndLoad(5f));
     }
 
@@ -82,29 +92,47 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        Debug.Log("Rewarded ad completed!");
+        Debug.Log($"Rewarded ad completed! State: {showCompletionState}, Scene: {SceneManager.GetActiveScene().name}");
 
-        // ✅ Only in HanojasTornis and only if fully watched
+        // ✅ HANOI: give -5 moves when fully watched
         if (SceneManager.GetActiveScene().name == "HanojasTornis" &&
             showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
-            if (moveCounter != null)
+            if (MoveCounter.Instance != null)
             {
-                moveCounter.RemoveMoves(5);   // ✅ HERE IS -5 MOVES
+                MoveCounter.Instance.RemoveMoves(5);
+                Debug.Log("Removed 5 moves from MoveCounter");
             }
+            else
+            {
+                Debug.LogWarning("MoveCounter.Instance is null in HanojasTornis!");
+            }
+        }
+
+        // ✅ Destroy flying objects in ANY scene that has a FlyingObjectManager
+        if (flyingObjectManager == null)
+        {
+            // Try to re-find just in case
+            flyingObjectManager = FindFirstObjectByType<FlyingObjectManager>();
         }
 
         if (flyingObjectManager != null)
         {
+            Debug.Log("[RewardedAds] Destroying all flying objects via FlyingObjectManager");
             flyingObjectManager.DestroyAllFlyingObjects();
         }
+        else
+        {
+            Debug.LogWarning("[RewardedAds] No FlyingObjectManager found in this scene to destroy objects!");
+        }
 
-        _rewardedAdButton.interactable = false;
+        if (_rewardedAdButton != null)
+            _rewardedAdButton.interactable = false;
+
         StartCoroutine(WaitAndLoad(10f));
 
         Time.timeScale = 1f;
     }
-
 
     public void SetButton(Button button)
     {
@@ -120,7 +148,9 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void ShowAd()
     {
-        _rewardedAdButton.interactable = false;
+        if (_rewardedAdButton != null)
+            _rewardedAdButton.interactable = false;
+
         Advertisement.Show(_adUnitId, this);
     }
 }
