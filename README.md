@@ -50,15 +50,15 @@ Taimeris: rāda, cik ātri spēlētājs atrisina mīklu.
  - [x] Izveidot projekta pamata mapes
  - [x] Pievienot kauliņus un stabu sprite
  - [x] Izveidot drag & drop sistēmu
- - [ ] Izveidot Hanojas torņa validation loģiku
- - [ ] Pievienot skaņas un audio avotus
- - [ ] Pievienot uzvaras noteikumus
- - [ ] Izveidot animētu galveno izvēlni
- - [ ] Pievienot ainavas maiņas un quit script
- - [ ] Pievienot spēles taimeri
- - [ ] Uzlabot animācijas un UI
- - [ ] Mainīt mērķa platformu uz Android
- - [ ] Pilnībā aizstāt peli ar touch input
- - [ ] Pievienot interstitial reklāmu
- - [ ] Pievienot rewarded reklāmu
- - [ ] Pievienot banner reklāmu
+ - [x] Izveidot Hanojas torņa validation loģiku
+ - [x] Pievienot skaņas un audio avotus
+ - [x] Pievienot uzvaras noteikumus
+ - [x] Izveidot animētu galveno izvēlni
+ - [x] Pievienot ainavas maiņas un quit script
+ - [x] Pievienot spēles taimeri
+ - [x] Uzlabot animācijas un UI
+ - [x] Mainīt mērķa platformu uz Android
+ - [x] Pilnībā aizstāt peli ar touch input
+ - [x] Pievienot interstitial reklāmu
+ - [x] Pievienot rewarded reklāmu
+ - [x] Pievienot banner reklāmu
