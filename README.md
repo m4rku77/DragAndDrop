@@ -1,64 +1,43 @@
-# 🏯 Unity 2D – Hanojas Torņa Spēle
+### 🎮 Unity 2D Games Collection
+This project contains two Unity 2D games built with drag-and-drop mechanics, animations, sound, UI effects, timers, and scene transitions.
+Both games include smooth interaction, touch/mouse support, animated menus, dynamic elements, and complete win logic.
 
-Laipni lūgti Hanoi Tower Puzzle — elegantā un izaicinošā Unity 2D spēlē, kur loģika un stratēģija ir svarīgākās!
-Pārvieto kauliņi, seko noteikumiem un atrisini klasisko Hanojas Torņa mīklu ar gludi animētām kustībām un intuitīvu vadību.
+### 🧩 Project Overview
+The collection features interactive 2D environments where players move objects, solve puzzles, follow rules, and complete goals.
+The worlds include animated elements (clouds, vehicles, characters), audio feedback, puzzle logic, validation, timers, and responsive UI designed for both PC and Android.
 
-### 🧩 Projekta Apraksts
+### Core Highlights
+- 🖱️ Smooth drag & drop / touch controls
+- 🧠 Puzzle logic, rule validation & win conditions
+- 🎬 Animated menus with sound
+- 🌥️ Animated world elements & moving objects
+- 📷 Camera control with zoom limits
+- ⏰ Built-in game timer
+- 🎵 Audio design & feedback
+- 📱 Android support
 
-Šis Unity projekts demonstrē rūpīgi izstrādātu Hanojas Torņa loģiku apvienojumā ar vizuāli tīru un atsaucīgu spēles vidi.
-Vilkt-uzmest kustības, pieskārienu kontrole, animācijas un skaņas apvienojas, lai radītu patīkamu prāta spēles pieredzi.
-
-### Galvenās Iezīmes
-
-🖱️📱 Gluda drag & drop vai touch-drag disku pārvietošana
-
-🧠 Pilnībā funkcionāla Hanojas Torņa loģika
-
-🚫 Automātiska kļūdu kontrole (nevar likt lielāku disku uz mazāka)
-
-⭐ Uzvaras noteikšana ar animācijām un skaņām
-
-🎬 Animēta izvēlne ar skaņu un kustību
-
-⏰ Spēles taimeris (HH:MM:SS)
-
-🎵 Atmosfērisks audio dizains
-
-📱 Pielāgota Android skārienvadība
-
-🚀 Gatavs paplašināšanai (grūtības, līmeņi, UI u.c.)
+### 📸 Screenshots
+<img width="596" height="300" alt="image" src="https://github.com/user-attachments/assets/42203065-e186-40f2-94a5-c6294e2db645" />
+<img width="586" height="298" alt="image" src="https://github.com/user-attachments/assets/8f9f4247-20e4-4adc-a479-355e212b74b1" />
+<img width="593" height="304" alt="image" src="https://github.com/user-attachments/assets/c17b5de4-0b07-4c0b-846c-23fda6a9f820" />
 
 
-### ⚙️ Kā Tas Darbojas
-
-Pārvieto disku: pieskaries vai velc disku no viena staba uz citu.
-
-Ievēro noteikumus: lielāku disku nevar likt uz mazāka.
-
-Atrisini mīklu: pārvieto visus diskus uz pēdējo stabu.
-
-Uzvara: kad visi kauliņi atrodas mērķa tornī, tiek atskaņots uzvaras efekts.
-
-Taimeris: rāda, cik ātri spēlētājs atrisina mīklu.
 
 
-### 📸 Ekrānšāviņi
-<img width="432" height="325" alt="image" src="https://github.com/user-attachments/assets/094d2a29-2364-44db-bd35-b682f70f4cc8" />
-
-
-✔️ To-Do List (pielāgots Hanojas tornim)
- - [x] Izveidot projekta pamata mapes
- - [x] Pievienot kauliņus un stabu sprite
- - [x] Izveidot drag & drop sistēmu
- - [ ] Izveidot Hanojas torņa validation loģiku
- - [ ] Pievienot skaņas un audio avotus
- - [ ] Pievienot uzvaras noteikumus
- - [ ] Izveidot animētu galveno izvēlni
- - [ ] Pievienot ainavas maiņas un quit script
- - [ ] Pievienot spēles taimeri
- - [ ] Uzlabot animācijas un UI
- - [ ] Mainīt mērķa platformu uz Android
- - [ ] Pilnībā aizstāt peli ar touch input
- - [ ] Pievienot interstitial reklāmu
- - [ ] Pievienot rewarded reklāmu
- - [ ] Pievienot banner reklāmu
+### ✔️ To-Do List
+- [x]  Create project structure and folders
+- [x]  Add assets, sprites, prefabs
+- [x]  Implement drag & drop system
+- [x]  Object transformation & fixation
+- [x]  Rule validation and puzzle logic
+- [x]  Animated world elements (clouds, vehicles, etc.)
+- [x]  Win detection system
+- [x]  Add audio sources and sound effects
+- [x]  Animated main menu
+- [x]  Scene change & quit scripts
+- [x]  Camera zoom + restrictions
+- [x]  Game time
+- [x]  Touch input for Android
+- [x]  Add flying/moving objects
+- [x]  Add ads (interstitial, rewarded, banner)
+- [x]  Add more animated characters & details
